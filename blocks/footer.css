@@ -1,0 +1,16 @@
+.footer {
+  display: flex;
+  justify-content: center;
+}
+
+.footer__content {
+  width: 104px;
+  height: 16px;
+  top: 1340px;
+  left: 668px;
+  font-weight: 400px;
+  font-size: 16px;
+  line-height: 16px;
+  color: #212121;
+  opacity: 70%;
+}
