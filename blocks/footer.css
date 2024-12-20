@@ -4,13 +4,11 @@
 }
 
 .footer__content {
-  width: 104px;
-  height: 16px;
-  top: 1340px;
-  left: 668px;
-  font-weight: 400px;
+  font-family: Poppins, Arial, Helvetica, sans-serif;
+  font-weight: 400;
   font-size: 16px;
-  line-height: 16px;
+  line-height: 1;
   color: #212121;
   opacity: 70%;
+  padding-bottom: 60px;
 }
