@@ -4,7 +4,7 @@ An image sharing site to be used across platforms.
 
 ## Description
 
-This project is a responsive social media website that lets users share images they find intriguing, it is built to be opened on different types of displays including, desktops, tabelts, and smart phones.
+This project is a responsive social media website that lets users share images they find intriguing, it is built to be opened on different types of displays including, desktops, tablets, and smart phones.
 
 ## Tech Stack
 
