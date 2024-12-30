@@ -4,12 +4,17 @@
   object-fit: cover;
   display: block;
   padding-bottom: 12px;
+  border-radius: 8px;
 }
 
 .card__title {
   margin: 0;
   margin-right: auto;
   font-size: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: fit-content;
 }
 
 .card__content {
@@ -24,16 +29,18 @@
 }
 
 .card__like-btn {
-  background-image: url(../images/Like\ Icon.svg);
+  background-image: url(../images/like.svg);
   width: 23px;
   height: 20px;
   border: none;
   background-color: transparent;
   opacity: 40%;
+  cursor: pointer;
 }
 
 .card__like-btn:hover {
   opacity: 100%;
+  color: black;
 }
 
 @media screen and (max-width: 627px) {
@@ -41,12 +48,8 @@
     height: 288px;
   }
 
-  .card__content {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    max-width: 288px;
+  .card__title {
+    max-width: 250px;
+    font-size: 16px;
   }
 }
