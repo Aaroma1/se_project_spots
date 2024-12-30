@@ -13,8 +13,7 @@
   font-size: 20px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
-  max-width: fit-content;
+  max-width: 350px;
 }
 
 .card__content {
@@ -40,7 +39,6 @@
 
 .card__like-btn:hover {
   opacity: 100%;
-  color: black;
 }
 
 @media screen and (max-width: 627px) {
