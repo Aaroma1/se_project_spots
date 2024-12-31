@@ -19,10 +19,11 @@ This project is a responsive social media website that lets users share images t
 
 This webpage is deployed through GitHub Pages
 
-- Deployment link:
+- [Deployment link](https://aaroma1.github.io/se_project_spots/)
 
 ### Overview
 
 - Intro
 - Figma
 - Images
+- video link:
