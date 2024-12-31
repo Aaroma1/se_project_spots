@@ -26,4 +26,4 @@ This webpage is deployed through GitHub Pages
 - Intro
 - Figma
 - Images
-- video link:
+- [video overview link](https://drive.google.com/file/d/1NR7qShyA0XTZAPrl99sI1kS-snZOAzxt/view?usp=drive_link)
