@@ -1,3 +1,6 @@
+/* finish styling preview modal*/
+/*make preview modal responsive*/
+
 .modal {
   position: fixed;
   top: 0;
@@ -48,6 +51,52 @@
 .modal__close-btn:hover {
   opacity: 100%;
 }
+.modal__image {
+  object-fit: contain;
+  max-width: 80vw;
+  max-height: 80vh;
+  overflow: hidden;
+  border-radius: 8px;
+  position: relative;
+}
+
+.modal__image-container {
+  padding: 0;
+  position: relative;
+}
+
+.modal__caption {
+  font-family: Poppins, Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  border-radius: 8px;
+  padding: 8px 4px;
+  position: absolute;
+  z-index: 1;
+  color: white;
+  background-color: #212121;
+}
+
+.modal_type_image-preview {
+  padding: 16px;
+}
+
+.modal__close-btn_type_preview {
+  background-image: url(../images/modal\ image\ close\ btn.svg);
+  top: -5px;
+  right: -40px;
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  opacity: 1;
+  z-index: 2;
+  position: absolute;
+}
+
+.modal__close-btn_type_preview:hover {
+  opacity: 0.4;
+}
 
 .modal__title {
   margin: 0 0 32px;
@@ -97,6 +146,12 @@
   color: #fcf5e5;
   border-radius: 8px;
   cursor: pointer;
+  transition: background 0.3s;
+}
+
+.modal__submit-btn:hover {
+  background: rgba(33, 33, 33, 0.8);
+  cursor: pointer;
 }
 
 @media screen and (max-width: 627px) {
@@ -105,7 +160,7 @@
   }
 
   .modal__container {
-    padding: 12px;
+    padding: 0;
   }
   .modal__title {
     font-size: 20px;
@@ -129,5 +184,24 @@
 
   .modal__submit-btn {
     width: 100%;
+  }
+  .modal_type_image-preview {
+    width: 100%;
+  }
+
+  .modal__close-btn {
+    top: -40px;
+    right: 0;
+  }
+  .modal__image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    position: relative;
+    object-fit: contain;
+  }
+
+  .modal__caption {
+    bottom: -60px;
   }
 }
