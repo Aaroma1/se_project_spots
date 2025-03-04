@@ -15,7 +15,7 @@
   transition: visibility 0.3s, opacity 0.3s ease-in;
 }
 
-.modal__opened {
+.modal_opened {
   visibility: visible;
 }
 
