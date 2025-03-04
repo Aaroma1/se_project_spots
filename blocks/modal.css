@@ -15,6 +15,7 @@
   visibility: hidden;
   font-family: poppins, Arial, Helvetica, sans-serif;
   padding: 0 16px;
+  transition: visibility 0.3s, opacity 0.3s ease-in;
 }
 
 .modal__opened {
@@ -38,7 +39,7 @@
   right: 50px;
   width: 40px;
   height: 40px;
-  background-image: url(../images/Group\ 27.svg);
+  background-image: url(../images/Group27.svg);
   background-color: #fff;
   color: #212121;
   opacity: 40%;
@@ -83,7 +84,7 @@
 }
 
 .modal__close-btn_type_preview {
-  background-image: url(../images/modal\ image\ close\ btn.svg);
+  background-image: url(../images/modalimageclosebtn.svg);
   top: -5px;
   right: -40px;
   background-color: transparent;
