@@ -10,6 +10,7 @@
   align-items: center;
   justify-content: center;
   visibility: hidden;
+  opacity: 0;
   font-family: poppins, Arial, Helvetica, sans-serif;
   padding: 0 16px;
   transition: visibility 0.3s, opacity 0.3s ease-in;
@@ -17,6 +18,7 @@
 
 .modal_opened {
   visibility: visible;
+  opacity: 1;
 }
 
 .modal__container {
