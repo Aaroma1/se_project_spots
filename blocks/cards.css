@@ -1,7 +1,7 @@
 .cards {
-  padding-top: 20px;
-  padding-bottom: 40px;
+  padding: 20px 0 40px;
   border-bottom: 1px solid #21212166;
+  max-width: 1280px;
 }
 .cards__list {
   list-style-type: none;
