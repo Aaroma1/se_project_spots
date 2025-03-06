@@ -199,12 +199,19 @@
     top: -40px;
     right: 0;
   }
+
+  .modal__image-container {
+    padding-right: 20px;
+  }
+
   .modal__image {
     width: 100%;
     height: auto;
     border-radius: 4px;
     position: relative;
     object-fit: contain;
+    max-width: none;
+    max-height: none;
   }
 
   .modal__caption {
