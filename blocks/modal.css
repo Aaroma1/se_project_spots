@@ -128,12 +128,27 @@
   line-height: 20px;
   border: 1px solid rgba(33, 33, 33, 0.4);
   border-radius: 8px;
+  margin: 8px 0 0;
   color: #212121;
   cursor: pointer;
 }
 
 .modal__input:hover {
   border: 1px solid #212121;
+}
+
+.modal__input_type_error {
+  border: 1px solid rgba(255, 0, 0, 0.6);
+}
+
+.modal__error {
+  display: block;
+  color: #ff0000;
+  opacity: 70%;
+  margin-top: 8px;
+  font-family: poppins, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .modal__submit-btn {
@@ -152,6 +167,10 @@
 .modal__submit-btn:hover {
   background: rgba(33, 33, 33, 0.8);
   cursor: pointer;
+}
+
+.button_inactive {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 @media screen and (max-width: 627px) {
