@@ -96,8 +96,17 @@ function openModal(modal) {
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
-  cardNameInput.value = "";
-  cardLinkInput.value = "";
+  const form = modal.querySelector(".modal__form");
+
+  if (form) {
+    form.reset();
+    const inputList = Array.from(form.querySelectorAll(".modal__input"));
+    resetValidation(form, inputList);
+    const submitButton = form.querySelector(".modal__submit-btn");
+    if (submitButton) {
+      disableButton(submitButton);
+    }
+  }
 }
 
 function handleEditFormSubmit(evt) {
@@ -116,6 +125,15 @@ function handleAddCardSubmit(evt) {
   disableButton(cardSubmitBtn, settings);
   closeModal(cardModal);
 }
+
+document.addEventListener("keydown", (evt) => {
+  if (evt.key === "Escape") {
+    const openedModal = document.querySelector(".modal_opened");
+    if (openedModal) {
+      closeModal(openedModal);
+    }
+  }
+});
 
 profileEditButton.addEventListener("click", () => {
   editModalNameInput.value = profileName.textContent;
