@@ -169,10 +169,6 @@
   cursor: pointer;
 }
 
-.button_inactive {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
 @media screen and (max-width: 627px) {
   .modal {
     padding: 0 10px;
