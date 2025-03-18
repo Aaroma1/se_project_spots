@@ -164,6 +164,10 @@
   transition: background 0.3s;
 }
 
+.modal__submit-btn_inactive {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .modal__submit-btn:hover {
   background: rgba(33, 33, 33, 0.8);
   cursor: pointer;

@@ -60,7 +60,7 @@ const setEventListeners = (formEl, config) => {
   toggleButtonState(inputList, buttonElement, config);
 
   formEl.addEventListener("reset", () => {
-    disableButton(buttonEl, config);
+    disableButton(buttonElement, config);
   });
 
   inputList.forEach((inputElement) => {
