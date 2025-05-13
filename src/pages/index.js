@@ -1,3 +1,20 @@
+import "./index.css";
+import {
+  enableValidation,
+  validationConfig,
+  resetValidation,
+  disableButton,
+} from "../scripts/validation.js";
+import Logo from "../images/Logo.svg";
+import avatarImage from "../images/avatar.jpg";
+import pencilIcon from "../images/pencil.svg";
+import plusIcon from "../images/plus.svg";
+
+document.querySelector(".header__logo").src = Logo;
+document.querySelector(".profile__avatar").src = avatarImage;
+document.querySelector(".profile__btn-icon").src = pencilIcon;
+document.querySelector(".profile__add-btn img").src = plusIcon;
+
 const initialCards = [
   {
     name: "Val Thorens",
@@ -113,7 +130,7 @@ function handleAddCardSubmit(evt) {
   const cardElement = getCardElement(inputValues);
   cardsList.prepend(cardElement);
   cardForm.reset();
-  disableButton(cardSubmitBtn, settings);
+  disableButton(cardSubmitBtn, validationConfig);
   closeModal(cardModal);
 }
 
@@ -132,7 +149,7 @@ profileEditButton.addEventListener("click", () => {
   resetValidation(
     editFormElement,
     [editModalNameInput, editModalDescriptionInput],
-    settings
+    validationConfig
   );
   openModal(editModal);
 });
@@ -159,3 +176,5 @@ modals.forEach((modal) => {
     }
   });
 });
+
+enableValidation(validationConfig);
