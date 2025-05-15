@@ -5,49 +5,80 @@ import {
   resetValidation,
   disableButton,
 } from "../scripts/validation.js";
+import Api from "../utils/Api.js";
 import Logo from "../images/Logo.svg";
 import avatarImage from "../images/avatar.jpg";
 import pencilIcon from "../images/pencil.svg";
 import plusIcon from "../images/plus.svg";
 
 document.querySelector(".header__logo").src = Logo;
-document.querySelector(".profile__avatar").src = avatarImage;
 document.querySelector(".profile__btn-icon").src = pencilIcon;
 document.querySelector(".profile__add-btn img").src = plusIcon;
 
-const initialCards = [
-  {
-    name: "Val Thorens",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/1-photo-by-moritz-feldmann-from-pexels.jpg",
+// const initialCards = [
+//   {
+//     name: "Val Thorens",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/1-photo-by-moritz-feldmann-from-pexels.jpg",
+//   },
+//   {
+//     name: "Restaurant terrace",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/2-photo-by-ceiline-from-pexels.jpg",
+//   },
+//   {
+//     name: "An outdoor cafe",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/3-photo-by-tubanur-dogan-from-pexels.jpg",
+//   },
+//   {
+//     name: "A very long bridge, over the forest and through the trees",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/4-photo-by-maurice-laschet-from-pexels.jpg",
+//   },
+//   {
+//     name: "Tunnel with morning light",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/5-photo-by-van-anh-nguyen-from-pexels.jpg",
+//   },
+//   {
+//     name: "Mountain house",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/6-photo-by-moritz-feldmann-from-pexels.jpg",
+//   },
+//   {
+//     name: "Landscape Preview",
+//     link: " https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg",
+//   },
+// ];
+
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "3eb5a4df-f597-4a49-8c69-ddec74885a30",
+    "Content-Type": "application/json",
   },
-  {
-    name: "Restaurant terrace",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/2-photo-by-ceiline-from-pexels.jpg",
-  },
-  {
-    name: "An outdoor cafe",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/3-photo-by-tubanur-dogan-from-pexels.jpg",
-  },
-  {
-    name: "A very long bridge, over the forest and through the trees",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/4-photo-by-maurice-laschet-from-pexels.jpg",
-  },
-  {
-    name: "Tunnel with morning light",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/5-photo-by-van-anh-nguyen-from-pexels.jpg",
-  },
-  {
-    name: "Mountain house",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/6-photo-by-moritz-feldmann-from-pexels.jpg",
-  },
-  {
-    name: "Landscape Preview",
-    link: " https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg",
-  },
-];
+});
+
+function setUserInfo(userData) {
+  console.log("User Data:", userData);
+  const profileAvatar = document.querySelector(".profile__avatar");
+  const profileName = document.querySelector(".profile__name");
+  const profileDescription = document.querySelector(".profile__description");
+
+  profileAvatar.src = userData.avatar;
+  profileName.textContent = userData.name;
+  profileDescription.textContent = userData.about;
+}
+
+api
+  .getAppInfo()
+  .then(([userData, cards]) => {
+    cards.forEach((item) => {
+      const cardElement = getCardElement(item);
+      cardsList.append(cardElement);
+    });
+    setUserInfo(userData);
+  })
+  .catch(console.error);
 
 const profileEditButton = document.querySelector(".profile__edit-btn");
 const cardModalButton = document.querySelector(".profile__add-btn");
+const avatarModalButton = document.querySelector(".profile__avatar-btn");
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__description");
 
@@ -66,6 +97,14 @@ const cardSubmitBtn = cardModal.querySelector(".modal__submit-btn");
 const cardNameInput = cardModal.querySelector("#add-card-name-input");
 const cardLinkInput = cardModal.querySelector("#add-card-link-input");
 
+const avatarModal = document.querySelector("#avatar-modal");
+const avatarForm = avatarModal.querySelector("#add-avatar-form");
+const avatarSubmitBtn = avatarModal.querySelector(".modal__submit-btn");
+const avatarCloseBtn = avatarModal.querySelector(".modal__close-btn");
+const avatarInput = avatarModal.querySelector(".modal__input");
+
+const deleteModal = document.querySelector("#delete-modal");
+
 const previewModal = document.querySelector("#preview-modal");
 const previewModalImageEl = previewModal.querySelector(".modal__image");
 const previewModalCaption = previewModal.querySelector(".modal__caption");
@@ -74,6 +113,10 @@ const cardTemplate = document.querySelector("#card-template");
 const cardsList = document.querySelector(".cards__list");
 
 const modals = document.querySelectorAll(".modal");
+
+function handleDeleteCard(evt) {
+  openModal(deleteModal);
+}
 
 function getCardElement(data) {
   const cardElement = cardTemplate.content
@@ -93,6 +136,10 @@ function getCardElement(data) {
     cardLikeBtn.classList.toggle("card__like-btn_liked");
   });
 
+  // cardLikeBtn.addEventListener("click", handleLike);
+  // cardDeleteBtn.addEventListener("click", handleDeleteCard());
+  // imageEl.addEventListener("click", () => handleImageClick(data));
+
   imageEl.addEventListener("click", () => {
     previewModalImageEl.src = data.link;
     previewModalImageEl.alt = data.name;
@@ -101,7 +148,8 @@ function getCardElement(data) {
   });
 
   cardDeleteBtn.addEventListener("click", () => {
-    cardElement.remove();
+    handleDeleteCard();
+    // cardElement.remove();
   });
 
   return cardElement;
@@ -119,9 +167,17 @@ function closeModal(modal) {
 
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
-  profileName.textContent = editModalNameInput.value;
-  profileDescription.textContent = editModalDescriptionInput.value;
-  closeModal(editModal);
+  api
+    .editUserInfo({
+      name: editModalNameInput.value,
+      about: editModalDescriptionInput.value,
+    })
+    .then((data) => {
+      profileName.textContent = data.name;
+      profileDescription.textContent = data.about;
+      closeModal(editModal);
+    })
+    .catch(console.error);
 }
 
 function handleAddCardSubmit(evt) {
@@ -132,6 +188,21 @@ function handleAddCardSubmit(evt) {
   cardForm.reset();
   disableButton(cardSubmitBtn, validationConfig);
   closeModal(cardModal);
+}
+
+function handleAvatarSubmit(evt) {
+  const avatar = document.querySelector(".profile__avatar");
+  evt.preventDefault();
+  console.log("Avatar URL being submitted:", avatarInput.value);
+  api
+    .editAvatarInfo({ avatar: avatarInput.value })
+    .then((data) => {
+      avatar.src = data.avatar;
+      avatarForm.reset();
+      disableButton(avatarSubmitBtn, validationConfig);
+      closeModal(avatarModal);
+    })
+    .catch(console.error);
 }
 
 function handleEscape(evt) {
@@ -161,10 +232,17 @@ cardModalButton.addEventListener("click", () => {
 editFormElement.addEventListener("submit", handleEditFormSubmit);
 cardForm.addEventListener("submit", handleAddCardSubmit);
 
-initialCards.forEach((item) => {
-  const cardElement = getCardElement(item);
-  cardsList.prepend(cardElement);
+avatarModalButton.addEventListener("click", () => {
+  openModal(avatarModal);
 });
+
+avatarForm.addEventListener("submit", handleAvatarSubmit);
+
+avatarCloseBtn.addEventListener("click", () => {
+  closeModal(avatarModal);
+});
+
+// set up avatar modal close button listener
 
 modals.forEach((modal) => {
   modal.addEventListener("click", (evt) => {
