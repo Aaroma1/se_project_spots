@@ -5,6 +5,7 @@ import {
   resetValidation,
   disableButton,
 } from "../scripts/validation.js";
+import { setButtonText } from "../utils/helpers.js";
 import Api from "../utils/Api.js";
 import Logo from "../images/Logo.svg";
 import avatarImage from "../images/avatar.jpg";
@@ -104,6 +105,7 @@ const avatarCloseBtn = avatarModal.querySelector(".modal__close-btn");
 const avatarInput = avatarModal.querySelector(".modal__input");
 
 const deleteModal = document.querySelector("#delete-modal");
+const deleteForm = deleteModal.querySelector(".modal__form");
 
 const previewModal = document.querySelector("#preview-modal");
 const previewModalImageEl = previewModal.querySelector(".modal__image");
@@ -112,12 +114,82 @@ const previewModalCaption = previewModal.querySelector(".modal__caption");
 const cardTemplate = document.querySelector("#card-template");
 const cardsList = document.querySelector(".cards__list");
 
+let selectedCard, selectedCardId;
+
 const modals = document.querySelectorAll(".modal");
 
-function handleDeleteCard(evt) {
+function handleDeleteSubmit(evt) {
+  evt.preventDefault();
+  api
+    .deleteCard(selectedCardId)
+    .then(() => {
+      selectedCard.remove();
+      closeModal(deleteModal);
+    })
+    .catch(console.error);
+}
+
+function handleDeleteCard(cardElement, cardId) {
+  console.log("Card Element:", cardElement);
+  console.log("Card ID:", cardElement.dataset.cardId);
+  selectedCard = cardElement;
+  selectedCardId = cardElement.dataset.cardId;
   openModal(deleteModal);
 }
 
+// function handleLike(evt, id) {
+//   remove - evt.target.classList.toggle("card__like-btn_liked");
+//   //1. check whether card is currently liked or not
+//   // const isLiked =???;
+//   // 2. call the changeLikeStatus method, passing it the appopriate arguments
+//   //3. handle response .then, and .catch
+//   // 4. in the .then, toggle the active class
+// }
+
+// function handleLike(evt, cardId) {
+//   // Get the like button that was clicked
+//   const likeButton = evt.target;
+
+//   // Find the like counter element (it should be nearby in your card structure)
+//   const likeCounter = likeButton
+//     .closest(".card")
+//     .querySelector(".card__like-count");
+
+//   // Check if the card is currently liked
+//   const isLiked = likeButton.classList.contains("card__like-btn_liked");
+
+//   // Call the API to update the like status
+//   api
+//     .handleLike(cardId, isLiked)
+//     .then((res) => {
+//       // Toggle the like button's appearance
+//       likeButton.classList.toggle("card__like-btn_liked");
+
+//       // Update the like counter with the new number of likes
+//       likeCounter.textContent = res.likes.length;
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//     });
+// }
+
+function handleLike(evt, cardId) {
+  const likeButton = evt.target;
+  const isLiked = likeButton.classList.contains("card__like-btn_liked");
+
+  api
+    .handleLike(cardId, isLiked)
+    .then((res) => {
+      if (res.isLiked) {
+        likeButton.classList.add("card__like-btn_liked");
+      } else {
+        likeButton.classList.remove("card__like-btn_liked");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
 function getCardElement(data) {
   const cardElement = cardTemplate.content
     .querySelector(".card")
@@ -128,13 +200,26 @@ function getCardElement(data) {
   const cardLikeBtn = cardElement.querySelector(".card__like-btn");
   const cardDeleteBtn = cardElement.querySelector(".card__delete-btn");
 
+  cardElement.dataset.cardId = data._id;
+
+  if (data.isLiked) {
+    cardLikeBtn.classList.add("card__like-btn_liked");
+  }
+
   cardNameEl.textContent = data.name;
   imageEl.src = data.link;
   imageEl.alt = data.name;
 
-  cardLikeBtn.addEventListener("click", () => {
-    cardLikeBtn.classList.toggle("card__like-btn_liked");
+  cardDeleteBtn.addEventListener("click", () => {
+    handleDeleteCard(cardElement, data._id);
+    // cardElement.remove();
   });
+
+  cardLikeBtn.addEventListener("click", (evt) => handleLike(evt, data._id));
+
+  // cardLikeBtn.addEventListener("click", () => {
+  //   cardLikeBtn.classList.toggle("card__like-btn_liked");
+  // });
 
   // cardLikeBtn.addEventListener("click", handleLike);
   // cardDeleteBtn.addEventListener("click", handleDeleteCard());
@@ -145,11 +230,6 @@ function getCardElement(data) {
     previewModalImageEl.alt = data.name;
     previewModalCaption.textContent = data.name;
     openModal(previewModal);
-  });
-
-  cardDeleteBtn.addEventListener("click", () => {
-    handleDeleteCard();
-    // cardElement.remove();
   });
 
   return cardElement;
@@ -167,6 +247,10 @@ function closeModal(modal) {
 
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
+
+  const submitBtn = evt.submitter;
+  setButtonText(submitBtn, true);
+
   api
     .editUserInfo({
       name: editModalNameInput.value,
@@ -177,17 +261,48 @@ function handleEditFormSubmit(evt) {
       profileDescription.textContent = data.about;
       closeModal(editModal);
     })
-    .catch(console.error);
+    .catch(console.error)
+    .finally(() => {
+      setButtonText(submitBtn, false);
+    });
 }
+
+// TODO - implement loading text for all other form submissions.
+
+// function handleAddCardSubmit(evt) {
+//   evt.preventDefault();
+//   const inputValues = { name: cardNameInput.value, link: cardLinkInput.value };
+//   const cardElement = getCardElement(inputValues);
+//   cardsList.prepend(cardElement);
+//   cardForm.reset();
+//   disableButton(cardSubmitBtn, validationConfig);
+//   closeModal(cardModal);
+// }
 
 function handleAddCardSubmit(evt) {
   evt.preventDefault();
-  const inputValues = { name: cardNameInput.value, link: cardLinkInput.value };
-  const cardElement = getCardElement(inputValues);
-  cardsList.prepend(cardElement);
-  cardForm.reset();
-  disableButton(cardSubmitBtn, validationConfig);
-  closeModal(cardModal);
+  const submitBtn = evt.submitter;
+  setButtonText(submitBtn, true);
+  const inputValues = {
+    name: cardNameInput.value,
+    link: cardLinkInput.value,
+  };
+
+  api
+    .addCard(inputValues.name, inputValues.link)
+    .then((cardData) => {
+      const cardElement = getCardElement(cardData);
+      cardsList.prepend(cardElement);
+      cardForm.reset();
+      disableButton(cardSubmitBtn, validationConfig);
+      closeModal(cardModal);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      setButtonText(submitBtn, false);
+    });
 }
 
 function handleAvatarSubmit(evt) {
@@ -242,7 +357,13 @@ avatarCloseBtn.addEventListener("click", () => {
   closeModal(avatarModal);
 });
 
-// set up avatar modal close button listener
+deleteForm.addEventListener("submit", handleDeleteSubmit);
+const cancelButton = deleteModal.querySelector(
+  ".modal__submit-btn:last-of-type"
+);
+cancelButton.addEventListener("click", () => {
+  closeModal(deleteModal);
+});
 
 modals.forEach((modal) => {
   modal.addEventListener("click", (evt) => {
