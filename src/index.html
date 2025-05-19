@@ -146,21 +146,20 @@
     <div class="modal" id="avatar-modal">
       <div class="modal__container">
         <button type="button" class="modal__close-btn"></button>
-        <h2 class="modal__title">Edit avatar</h2>
+        <h2 class="modal__title">Edit profile avatar</h2>
         <form
           id="add-avatar-form"
           name="edit avatar"
-          for="profile-avatar-input"
           class="modal__form"
           novalidate
         >
-          <label for="profile-avatar-input" class="profile-avatar-input">
-            Avatar
+          <label for="profile-avatar-input" class="modal__label">
+            Profile Picture
             <input
               id="profile-avatar-input"
-              type="text"
+              type="url"
               class="modal__input"
-              placeholder="avatar goes here"
+              placeholder="Paste the link to an image"
               required
             />
             <span id="profile-avatar-input-error" class="modal__error"></span>

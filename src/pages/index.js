@@ -8,7 +8,7 @@ import {
 import { setButtonText } from "../utils/helpers.js";
 import Api from "../utils/Api.js";
 import Logo from "../images/Logo.svg";
-import avatarImage from "../images/avatar.jpg";
+import avatar from "../images/avatar.jpg";
 import pencilIcon from "../images/pencil.svg";
 import plusIcon from "../images/plus.svg";
 
@@ -120,58 +120,26 @@ const modals = document.querySelectorAll(".modal");
 
 function handleDeleteSubmit(evt) {
   evt.preventDefault();
+  const submitBtn = evt.submitter;
+  setButtonText(submitBtn, true, "Delete", "Deleting...");
+
   api
     .deleteCard(selectedCardId)
     .then(() => {
       selectedCard.remove();
       closeModal(deleteModal);
     })
-    .catch(console.error);
+    .catch(console.error)
+    .finally(() => {
+      setButtonText(submitBtn, false);
+    });
 }
 
 function handleDeleteCard(cardElement, cardId) {
-  console.log("Card Element:", cardElement);
-  console.log("Card ID:", cardElement.dataset.cardId);
   selectedCard = cardElement;
   selectedCardId = cardElement.dataset.cardId;
   openModal(deleteModal);
 }
-
-// function handleLike(evt, id) {
-//   remove - evt.target.classList.toggle("card__like-btn_liked");
-//   //1. check whether card is currently liked or not
-//   // const isLiked =???;
-//   // 2. call the changeLikeStatus method, passing it the appopriate arguments
-//   //3. handle response .then, and .catch
-//   // 4. in the .then, toggle the active class
-// }
-
-// function handleLike(evt, cardId) {
-//   // Get the like button that was clicked
-//   const likeButton = evt.target;
-
-//   // Find the like counter element (it should be nearby in your card structure)
-//   const likeCounter = likeButton
-//     .closest(".card")
-//     .querySelector(".card__like-count");
-
-//   // Check if the card is currently liked
-//   const isLiked = likeButton.classList.contains("card__like-btn_liked");
-
-//   // Call the API to update the like status
-//   api
-//     .handleLike(cardId, isLiked)
-//     .then((res) => {
-//       // Toggle the like button's appearance
-//       likeButton.classList.toggle("card__like-btn_liked");
-
-//       // Update the like counter with the new number of likes
-//       likeCounter.textContent = res.likes.length;
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//     });
-// }
 
 function handleLike(evt, cardId) {
   const likeButton = evt.target;
@@ -212,18 +180,9 @@ function getCardElement(data) {
 
   cardDeleteBtn.addEventListener("click", () => {
     handleDeleteCard(cardElement, data._id);
-    // cardElement.remove();
   });
 
   cardLikeBtn.addEventListener("click", (evt) => handleLike(evt, data._id));
-
-  // cardLikeBtn.addEventListener("click", () => {
-  //   cardLikeBtn.classList.toggle("card__like-btn_liked");
-  // });
-
-  // cardLikeBtn.addEventListener("click", handleLike);
-  // cardDeleteBtn.addEventListener("click", handleDeleteCard());
-  // imageEl.addEventListener("click", () => handleImageClick(data));
 
   imageEl.addEventListener("click", () => {
     previewModalImageEl.src = data.link;
@@ -267,18 +226,6 @@ function handleEditFormSubmit(evt) {
     });
 }
 
-// TODO - implement loading text for all other form submissions.
-
-// function handleAddCardSubmit(evt) {
-//   evt.preventDefault();
-//   const inputValues = { name: cardNameInput.value, link: cardLinkInput.value };
-//   const cardElement = getCardElement(inputValues);
-//   cardsList.prepend(cardElement);
-//   cardForm.reset();
-//   disableButton(cardSubmitBtn, validationConfig);
-//   closeModal(cardModal);
-// }
-
 function handleAddCardSubmit(evt) {
   evt.preventDefault();
   const submitBtn = evt.submitter;
@@ -289,7 +236,7 @@ function handleAddCardSubmit(evt) {
   };
 
   api
-    .addCard(inputValues.name, inputValues.link)
+    .addCard(inputValues)
     .then((cardData) => {
       const cardElement = getCardElement(cardData);
       cardsList.prepend(cardElement);
@@ -306,9 +253,11 @@ function handleAddCardSubmit(evt) {
 }
 
 function handleAvatarSubmit(evt) {
-  const avatar = document.querySelector(".profile__avatar");
   evt.preventDefault();
-  console.log("Avatar URL being submitted:", avatarInput.value);
+  const avatar = document.querySelector(".profile__avatar");
+  const submitBtn = evt.submitter;
+  setButtonText(submitBtn, true);
+
   api
     .editAvatarInfo({ avatar: avatarInput.value })
     .then((data) => {
@@ -317,7 +266,10 @@ function handleAvatarSubmit(evt) {
       disableButton(avatarSubmitBtn, validationConfig);
       closeModal(avatarModal);
     })
-    .catch(console.error);
+    .catch(console.error)
+    .finally(() => {
+      setButtonText(submitBtn, false);
+    });
 }
 
 function handleEscape(evt) {

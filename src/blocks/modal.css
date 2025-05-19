@@ -173,6 +173,44 @@
   cursor: pointer;
 }
 
+#delete-form .modal__submit-btn:first-of-type {
+  background-color: #ff6565;
+  border: none;
+  outline: none;
+}
+
+#delete-form .modal__submit-btn:first-of-type:hover {
+  background-color: #ff3333;
+}
+
+#delete-form .modal__submit-btn:last-of-type {
+  background-color: white;
+  color: black;
+}
+
+#delete-form .modal__submit-btn:last-of-type:hover {
+  background-color: black;
+  color: white;
+}
+
+#delete-form {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+#delete-modal .modal__close-btn {
+  top: 0;
+  right: -56px;
+  position: absolute;
+  background-image: url(../images/modalimageclosebtn.svg);
+  opacity: 1;
+}
+
+#delete-modal .modal__close-btn:hover {
+  opacity: 0.6;
+}
+
 @media screen and (max-width: 627px) {
   .modal {
     padding: 0 10px;
