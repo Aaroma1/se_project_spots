@@ -56,7 +56,6 @@ const api = new Api({
 });
 
 function setUserInfo(userData) {
-  console.log("User Data:", userData);
   const profileAvatar = document.querySelector(".profile__avatar");
   const profileName = document.querySelector(".profile__name");
   const profileDescription = document.querySelector(".profile__description");
